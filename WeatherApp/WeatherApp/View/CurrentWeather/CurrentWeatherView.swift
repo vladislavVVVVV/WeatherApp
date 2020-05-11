@@ -9,18 +9,25 @@
 import UIKit
 
 class CurrentWeatherView: UIView {
-    
-   
+
     @IBOutlet var containtView: UIView!
     @IBOutlet var weatherImage: UIImageView!
     @IBOutlet var cityNameLabel: UILabel!
     @IBOutlet var tempLabel: UILabel!
+
+    @IBOutlet var humidityLabel: UILabel!
+   
+    @IBOutlet var pressureLabel: UILabel!
+    
+    @IBOutlet var maxTemp: UILabel!
+    @IBOutlet var speedWindLabel: UILabel!
+    @IBOutlet var degreeWind: UILabel!
     public override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
         self.commonInti()
     }
-    
+
     @available(*, unavailable)
     public required init?(coder: NSCoder) {
         fatalError("init?(coder:) is not supported")
@@ -31,10 +38,6 @@ class CurrentWeatherView: UIView {
         addSubview(containtView)
         containtView.frame = self.bounds
         containtView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-        
-//        self.tempLabel.font = UIFont(name: ProximaNovaSoftBold, size: 50)
-//        self.cityNameLabel.font = UIFont(name: ProximaNovaSemibold, size: 36)
-//        
     }
-    
+
 }

@@ -7,3 +7,14 @@
 //
 
 import Foundation
+import UIKit
+
+class Utility: NSObject {
+    class func getDateString(stringDate: String, dateFormatInput:DateFormatter, dateFormatOutput: DateFormatter) -> String {
+        let date = dateFormatInput.date(from: stringDate)
+        print("Date from response :: ",date as Any)
+        let dateString = dateFormatOutput.string(from: date!)
+        return dateString
+    }
+    
+}

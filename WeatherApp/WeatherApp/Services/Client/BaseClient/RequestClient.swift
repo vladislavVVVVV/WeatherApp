@@ -9,13 +9,13 @@
 import Foundation
 
 class RequestClient: GenericAPIClient {
-        
+
     internal let session: URLSession
-    
+
     init(configuration: URLSessionConfiguration) {
         self.session = URLSession(configuration: configuration)
     }
-    
+
     convenience init() {
         self.init(configuration: .default)
     }
@@ -33,7 +33,7 @@ extension WeatherAPI: Endpoint {
         case .forecast: return "/forecast"
         }
     }
-    
+
     var base: String {
         return "https://api.openweathermap.org/data/2.5"
     }

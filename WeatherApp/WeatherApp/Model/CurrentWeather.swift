@@ -9,18 +9,18 @@
 import Foundation
 import UIKit
 
-struct CurrentWeather : Codable {
-let coord : Coord?
-let weather : [Weather]?
-let base : String?
-let main : Main?
-let wind : Wind?
-let clouds : Clouds?
-let dt : Int?
-let sys : Sys?
-let id : Int?
-let name : String?
-let cod : Int?
+struct CurrentWeather: Codable {
+let coord: Coord?
+let weather: [Weather]?
+let base: String?
+let main: Main?
+let wind: Wind?
+let clouds: Clouds?
+let dt: Int?
+let sys: Sys?
+let id: Int?
+let name: String?
+let cod: Int?
 
 enum CodingKeys: String, CodingKey {
 
@@ -38,11 +38,11 @@ enum CodingKeys: String, CodingKey {
     }
 }
 
-struct Weather : Codable {
-    let id : Int?
-    let main : String?
-    let description : String?
-    let icon : String?
+struct Weather: Codable {
+    let id: Int?
+    let main: String?
+    let description: String?
+    let icon: String?
 
     enum CodingKeys: String, CodingKey {
 
@@ -71,6 +71,8 @@ extension Weather {
             return UIImage(named: "03n")!
         case "04d":
             return UIImage(named: "04d")!
+        case "04n":
+            return UIImage(named: "04n")!
         case "09d":
             return UIImage(named: "09d")!
         case "09n":
@@ -97,15 +99,14 @@ extension Weather {
     }
 }
 
-
-struct Main : Codable {
-    let temp : Double?
-    let pressure : Double?
-    let humidity : Int?
-    let temp_min : Double?
-    let temp_max : Double?
-    let sea_level : Double?
-    let grnd_level : Double?
+struct Main: Codable {
+    let temp: Double?
+    let pressure: Double?
+    let humidity: Int?
+    let temp_min: Double?
+    let temp_max: Double?
+    let sea_level: Double?
+    let grnd_level: Double?
 
     enum CodingKeys: String, CodingKey {
 
@@ -119,11 +120,11 @@ struct Main : Codable {
     }
 }
 
-struct Sys : Codable {
-    let message : Double?
-    let country : String?
-    let sunrise : Int?
-    let sunset : Int?
+struct Sys: Codable {
+    let message: Double?
+    let country: String?
+    let sunrise: Int?
+    let sunset: Int?
 
     enum CodingKeys: String, CodingKey {
 
@@ -134,10 +135,9 @@ struct Sys : Codable {
     }
 }
 
-
-struct Wind : Codable {
-    let speed : Double?
-    let deg : Int?
+struct Wind: Codable {
+    let speed: Double?
+    let deg: Int?
 
     enum CodingKeys: String, CodingKey {
 
@@ -146,8 +146,8 @@ struct Wind : Codable {
     }
 }
 
-struct Clouds : Codable {
-    let all : Int?
+struct Clouds: Codable {
+    let all: Int?
 
     enum CodingKeys: String, CodingKey {
 
@@ -155,10 +155,9 @@ struct Clouds : Codable {
     }
 }
 
-
-struct Coord : Codable {
-    let lon : Double?
-    let lat : Double?
+struct Coord: Codable {
+    let lon: Double?
+    let lat: Double?
 
     enum CodingKeys: String, CodingKey {
 

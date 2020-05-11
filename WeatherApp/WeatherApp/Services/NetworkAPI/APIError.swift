@@ -9,7 +9,7 @@
 import Foundation
 
 enum APIError: Error {
-    
+
     case invalidData
     case jsonDecodingFailure
     case responseUnsuccessful(description: String)
@@ -18,7 +18,7 @@ enum APIError: Error {
     case jsonConversionFailure(description: String)
     case postParametersEncodingFalure(description: String)
     case noInternetFailure
-    
+
     var customDescription: String {
         switch self {
         case .requestFailed(let description): return "APIError - Request Failed -> \(description)"
