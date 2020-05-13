@@ -12,17 +12,21 @@ import UIKit
 class ForecastViewModel: NSObject {
 
     private var forecastWeatherModel: ForecastWeatherModel
-    
     private var forecastView: ForecastView?
     
+   
+
     // we set a variable to hold the contentOffSet before scroll view scrolls
     var lastContentOffset: CGFloat = 0
+    
+   
         
     private let swipeUp = UISwipeGestureRecognizer() // Swipe Up gesture recognizer
     private let swipeDown = UISwipeGestureRecognizer() // Swipe Down gesture recognizer OR You can use single Swipe Gesture
     
     public init(forecastWeatherModel: ForecastWeatherModel) {
         self.forecastWeatherModel = forecastWeatherModel
+        
     }
     
 }
@@ -35,8 +39,7 @@ extension ForecastViewModel: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "ForecastTableViewCell", for: indexPath) as? ForecastTableViewCell {
             cell.configure(weather: self.forecastWeatherModel.list?[indexPath.row])
-            
-            
+            print(self.forecastWeatherModel.list?[indexPath.row])
             return cell
         }
         return UITableViewCell()
@@ -120,4 +123,16 @@ extension ForecastViewModel {
             }
         }
     }
+    
+    public var countryName: String {
+        return forecastWeatherModel.city?.name ?? "Unknown"
+     }
+    
+    public func prepareCity() -> String {
+           var str = ""
+           str += countryName
+           return str
+       }
+       
+    
 }

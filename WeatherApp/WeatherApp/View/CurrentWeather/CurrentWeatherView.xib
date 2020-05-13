@@ -15,6 +15,7 @@
                 <outlet property="humidityLabel" destination="Cjc-NW-xQK" id="MnA-Me-mCN"/>
                 <outlet property="maxTemp" destination="NL5-gr-rH8" id="CgB-gN-rdT"/>
                 <outlet property="pressureLabel" destination="mwY-bv-N1o" id="Dkc-ov-nTK"/>
+                <outlet property="shareButton" destination="utH-tR-wQ6" id="xnG-HI-m55"/>
                 <outlet property="speedWindLabel" destination="hDK-6z-yoo" id="eOV-rL-xie"/>
                 <outlet property="tempLabel" destination="FQi-cE-NVN" id="5h8-Ke-NRt"/>
                 <outlet property="weatherImage" destination="ZOk-0B-294" id="HTk-Dr-mzH"/>

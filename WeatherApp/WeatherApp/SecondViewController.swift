@@ -22,7 +22,7 @@ class SecondViewController: UIViewController {
         //MARK: viewDidLoad
         override func viewDidLoad() {
             super.viewDidLoad()
-
+        
             self.coreLocationSetup()
             // Do any additional setup after loading the view.
         }
@@ -46,7 +46,7 @@ class SecondViewController: UIViewController {
                 case .success(let responseObj):
                     //initialize ForecastViewModel
                     self.forecastHourlyViewModel = ForecastViewModel(forecastWeatherModel:responseObj!)
-                    
+                    self.navigationItem.title = self.forecastHourlyViewModel?.prepareCity()
                     self.addHourlyForecastView()
                 case .failure(let error):
                     print(error)

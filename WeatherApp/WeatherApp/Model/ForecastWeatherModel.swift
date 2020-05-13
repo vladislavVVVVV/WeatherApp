@@ -9,6 +9,12 @@
 import Foundation
 import UIKit
 
+struct DaySection {
+    var day: Date
+    var forecastWeatherModels: [ForecastWeatherModel]
+}
+
+
 struct ForecastWeatherModel : Codable {
     let cod : String?
     let message : Int?
@@ -47,6 +53,14 @@ struct ForecastList : Codable {
         case dtTxt = "dt_txt"
     }
 }
+
+//extension ForecastList{
+//    var dateOfForecast: Date{
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "yyyy-MM-dd"
+//        return(dateFormatter.date(from: dtTxt!)!)
+//    }
+//}
 
 struct ForecastMain : Codable {
     let temp : Double?

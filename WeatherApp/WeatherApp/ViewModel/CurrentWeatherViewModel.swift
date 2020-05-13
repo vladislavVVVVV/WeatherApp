@@ -13,6 +13,7 @@ import UIKit
 class CurrentWeatherViewModel: NSObject {
     private var currentWeather: CurrentWeather
 
+    public var view: CurrentWeatherView!
     public init(currentWeather: CurrentWeather) {
         self.currentWeather = currentWeather
     }
@@ -61,9 +62,9 @@ class CurrentWeatherViewModel: NSObject {
         let side = arr[ind]
         return side
     }
-   
-   
     
+    
+   
     
     public var weatherIcon: UIImage {
         return (currentWeather.weather?[0].iconImage)!
@@ -72,7 +73,15 @@ class CurrentWeatherViewModel: NSObject {
 }
 
 extension CurrentWeatherViewModel {
-    public func configure(_ view: CurrentWeatherView) {
+   
+    public func prepareStringForShare() -> String {
+        var str = ""
+        str += maxTemp + "℃"
+        return str
+    }
+    
+   
+    public func configure() {
         view.maxTemp.text =  maxTemp + "℃"
         view.humidityLabel.text = humidity + "%"
         view.pressureLabel.text = pressure + " hPa"

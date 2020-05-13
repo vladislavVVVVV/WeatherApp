@@ -14,19 +14,20 @@ class CurrentWeatherView: UIView {
     @IBOutlet var weatherImage: UIImageView!
     @IBOutlet var cityNameLabel: UILabel!
     @IBOutlet var tempLabel: UILabel!
-
     @IBOutlet var humidityLabel: UILabel!
-   
     @IBOutlet var pressureLabel: UILabel!
-    
     @IBOutlet var maxTemp: UILabel!
     @IBOutlet var speedWindLabel: UILabel!
     @IBOutlet var degreeWind: UILabel!
+    
+    @IBOutlet var shareButton: UIButton!
+    
     public override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
         self.commonInti()
     }
+    
 
     @available(*, unavailable)
     public required init?(coder: NSCoder) {
@@ -39,5 +40,4 @@ class CurrentWeatherView: UIView {
         containtView.frame = self.bounds
         containtView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     }
-
 }
