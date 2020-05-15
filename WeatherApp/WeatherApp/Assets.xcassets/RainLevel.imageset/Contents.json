@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "maxTemp.png",
+      "filename" : "RainLevel.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "maxTemp@2x.png",
+      "filename" : "RainLevel@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "maxTemp@3x.png",
+      "filename" : "RainLevel@3x.png",
       "scale" : "3x"
     }
   ],
