@@ -10,7 +10,7 @@ import Foundation
 
 import Foundation
 
-/// Generic client to avoid rewrite URL session code
+// Generic client to avoid rewrite URL session code
 protocol GenericAPIClient {
     var session: URLSession { get }
     func fetch<T: Decodable>(with request: URLRequest, withStatusCode statusCode: Int, decode: @escaping (Decodable) -> T?, completion: @escaping (Result<T, APIError>) -> Void)
@@ -20,7 +20,8 @@ extension GenericAPIClient {
 
     typealias JSONTaskCompletionHandler = (Decodable?, APIError?) -> Void
 
-    private func decodingTask<T: Decodable>(with request: URLRequest, withStatusCode statusCode: Int, decodingType: T.Type, completionHandler completion: @escaping JSONTaskCompletionHandler) -> URLSessionDataTask {
+    private func decodingTask<T: Decodable>(with request: URLRequest, withStatusCode statusCode: Int,
+                                            decodingType: T.Type, completionHandler completion: @escaping JSONTaskCompletionHandler) -> URLSessionDataTask {
 
         let task = session.dataTask(with: request) { data, response, error in
 

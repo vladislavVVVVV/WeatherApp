@@ -7,41 +7,60 @@
 //
 
 import UIKit
+import SnapKit
 
 class ForecastView: UIView {
-
-    @IBOutlet var containtView: UIView!
-    @IBOutlet var tableView: UITableView!
     
+    lazy var containtView = UIView()
+    lazy var tableView = UITableView()
     
-     public override init(frame: CGRect) {
-            super.init(frame: frame)
-            backgroundColor = .white
-            self.commonInti()
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = .white
+        self.commonInti()
+        initializeUI()
+    }
+    
+    @available(*, unavailable)
+    public required init?(coder: NSCoder) {
+        fatalError("init?(coder:) is not supported")
+    }
+    
+    private func commonInti() {
+        addSubview(containtView)
+        containtView.frame = self.bounds
+        containtView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+    }
+    
+    private func initializeUI() {
+        containtView.addSubview(tableView)
+        
+        containtView.snp.makeConstraints { (make) in
+            make.top.equalTo(self.safeAreaLayoutGuide.snp.top)
+            make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
+            make.left.equalTo(self.safeAreaLayoutGuide.snp.left)
+            make.right.equalTo(self.safeAreaLayoutGuide.snp.right)
         }
         
-        @available(*, unavailable)
-        public required init?(coder: NSCoder) {
-            fatalError("init?(coder:) is not supported")
+        tableView.snp.makeConstraints { (make) in
+            make.top.equalTo(containtView.safeAreaLayoutGuide.snp.top)
+            make.bottom.equalTo(containtView.safeAreaLayoutGuide.snp.bottom)
+            make.left.equalTo(containtView.safeAreaLayoutGuide.snp.left)
+            make.right.equalTo(containtView.safeAreaLayoutGuide.snp.right)
         }
         
-        private func commonInti() {
-            Bundle.main.loadNibNamed("ForecastView", owner: self, options: nil)
-            addSubview(containtView)
-            containtView.frame = self.bounds
-            containtView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-        }
-        
-        public func addCornerRadius() {
-            self.layer.cornerRadius = 20
-            self.layoutIfNeeded()
-            self.clipsToBounds = true
-        }
-        
-        public func removeCornerRadius() {
-            self.layer.cornerRadius = 0
-            self.layoutSubviews()
-            self.clipsToBounds = false
-        }
         
     }
+    public func addCornerRadius() {
+        self.layer.cornerRadius = 20
+        self.layoutIfNeeded()
+        self.clipsToBounds = true
+    }
+    
+    public func removeCornerRadius() {
+        self.layer.cornerRadius = 0
+        self.layoutSubviews()
+        self.clipsToBounds = false
+    }
+    
+}

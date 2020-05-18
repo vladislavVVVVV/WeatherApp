@@ -7,17 +7,15 @@
 //
 
 import Foundation
-
-import UIKit
-
-import Foundation
 import UIKit
 
 class WeatherClient: RequestClient {
     static let shared = WeatherClient()
 
-    /// getCurrentLocationWeather
-    func getCurrentLocationWeather(query1: String = "", query2: String = "", withStatusCode statusCode: Int = 200, vc: UIViewController, completion: @escaping (Result<CurrentWeather?, APIError>) -> Void) {
+    // getCurrentLocationWeather
+    func getCurrentLocationWeather(query1: String = "", query2: String = "",
+                                   withStatusCode statusCode: Int = 200, vc: UIViewController,
+                                   completion: @escaping (Result<CurrentWeather?, APIError>) -> Void) {
         if Reachability.isConnectedToNetwork() {
             guard let request = WeatherAPI.weather.requestWithQuery(query1: query1, query2: query2) else { return }
 

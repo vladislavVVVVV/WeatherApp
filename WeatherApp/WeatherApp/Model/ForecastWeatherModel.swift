@@ -9,105 +9,79 @@
 import Foundation
 import UIKit
 
-struct DaySection {
-    var day: Date
-    var forecastWeatherModels: [ForecastWeatherModel]
-}
-
-
-struct ForecastWeatherModel : Codable {
-    let cod : String?
-    let message : Int?
-    let cnt : Int?
-    let list : [ForecastList]?
-    let city : City?
-    
+struct ForecastWeatherModel: Codable {
+    let cod: String?
+    let message: Int?
+    let cnt: Int?
+    let list: [ForecastList]?
+    let city: City?
     enum CodingKeys: String, CodingKey {
-        
-        case cod = "cod"
-        case message = "message"
-        case cnt = "cnt"
-        case list = "list"
-        case city = "city"
+        case cod
+        case message
+        case cnt
+        case list
+        case city
     }
 }
 
+struct DaySection {
+    var day: Date
+    var list: [ForecastList]
+}
 
-struct ForecastList : Codable {
-    let dt : Int?
-    let main : ForecastMain?
-    let weather : [ForecastWeather]?
-    let clouds : ForecastClouds?
-    let wind : ForecastWind?
-    let sys : ForecastSys?
-    let dtTxt : String?
-    
+struct ForecastList: Codable {
+    let dt: Int?
+    let main: ForecastMain?
+    let weather: [ForecastWeather]?
+    let clouds: ForecastClouds?
+    let wind: ForecastWind?
+    let sys: ForecastSys?
+    let dtTxt: String?
     enum CodingKeys: String, CodingKey {
-        
-        case dt = "dt"
-        case main = "main"
-        case weather = "weather"
-        case clouds = "clouds"
-        case wind = "wind"
-        case sys = "sys"
+        case dt
+        case main
+        case weather
+        case clouds
+        case wind
+        case sys
         case dtTxt = "dt_txt"
     }
 }
 
-//extension ForecastList{
-//    var dateOfForecast: Date{
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "yyyy-MM-dd"
-//        return(dateFormatter.date(from: dtTxt!)!)
-//    }
-//}
-
-struct ForecastMain : Codable {
-    let temp : Double?
-    let feels_like : Double?
-    let temp_min : Double?
-    let temp_max : Double?
-    let pressure : Int?
-    let sea_level : Int?
-    let grnd_level : Int?
-    let humidity : Int?
-    let temp_kf : Double?
-    
-    enum CodingKeys: String, CodingKey {
-        
-        case temp = "temp"
-        case feels_like = "feels_like"
-        case temp_min = "temp_min"
-        case temp_max = "temp_max"
-        case pressure = "pressure"
-        case sea_level = "sea_level"
-        case grnd_level = "grnd_level"
-        case humidity = "humidity"
-        case temp_kf = "temp_kf"
+extension String {
+    func toData() -> Data {
+        return Data(self.utf8)
     }
 }
 
-struct ForecastSys : Codable {
-    let pod : String?
-    
+struct ForecastMain: Codable {
+    let temp: Double?
+    let pressure: Int?
+    let humidity: Int?
     enum CodingKeys: String, CodingKey {
-        
-        case pod = "pod"
+        case temp
+        case pressure
+        case humidity
     }
 }
 
-struct ForecastWeather : Codable {
-    let id : Int?
-    let main : String?
-    let description : String?
-    let icon : String?
-    
+struct ForecastSys: Codable {
+    let pod: String?
     enum CodingKeys: String, CodingKey {
-        
-        case id = "id"
-        case main = "main"
-        case description = "description"
-        case icon = "icon"
+        case pod
+    }
+}
+
+struct ForecastWeather: Codable {
+    let id: Int?
+    let main: String?
+    let description: String?
+    let icon: String?
+    enum CodingKeys: String, CodingKey {
+        case id
+        case main
+        case description
+        case icon
     }
 }
 
@@ -117,13 +91,13 @@ extension ForecastWeather {
         case "01d":
             return UIImage(named: "01d")!
         case "01n":
-             return UIImage(named: "01n")!
+            return UIImage(named: "01n")!
         case "02d":
-             return UIImage(named: "02d")!
+            return UIImage(named: "02d")!
         case "02n":
-             return UIImage(named: "02n")!
+            return UIImage(named: "02n")!
         case "03d":
-             return UIImage(named: "03d")!
+            return UIImage(named: "03d")!
         case "03n":
             return UIImage(named: "03n")!
         case "04d":
@@ -156,57 +130,48 @@ extension ForecastWeather {
     }
 }
 
-
-struct ForecastWind : Codable {
-    let speed : Double?
-    let deg : Int?
-    
+struct ForecastWind: Codable {
+    let speed: Double?
+    let deg: Int?
     enum CodingKeys: String, CodingKey {
-        
-        case speed = "speed"
-        case deg = "deg"
+        case speed
+        case deg
     }
 }
 
-struct City : Codable {
-    let id : Int?
-    let name : String?
-    let coord : Coord?
-    let country : String?
-    let population : Int?
-    let timezone : Int?
-    let sunrise : Int?
-    let sunset : Int?
-    
+struct City: Codable {
+    let id: Int?
+    let name: String?
+    let coord: Coord?
+    let country: String?
+    let population: Int?
+    let timezone: Int?
+    let sunrise: Int?
+    let sunset: Int?
     enum CodingKeys: String, CodingKey {
-        
-        case id = "id"
-        case name = "name"
-        case coord = "coord"
-        case country = "country"
-        case population = "population"
-        case timezone = "timezone"
-        case sunrise = "sunrise"
-        case sunset = "sunset"
+        case id
+        case name
+        case coord
+        case country
+        case population
+        case timezone
+        case sunrise
+        case sunset
     }
 }
 
-struct ForecastClouds : Codable {
-    let all : Int?
-    
+struct ForecastClouds: Codable {
+    let all: Int?
     enum CodingKeys: String, CodingKey {
-        
-        case all = "all"
+        case all
     }
 }
 
-struct ForecastCoord : Codable {
-    let lat : Double?
-    let lon : Double?
-    
+struct ForecastCoord: Codable {
+    let lat: Double?
+    let lon: Double?
     enum CodingKeys: String, CodingKey {
-        
-        case lat = "lat"
-        case lon = "lon"
+        case lat
+        case lon
     }
 }

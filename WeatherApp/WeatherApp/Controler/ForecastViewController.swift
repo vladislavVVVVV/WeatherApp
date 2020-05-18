@@ -11,102 +11,87 @@ import CoreLocation
 
 class ForecastViewController: UIViewController {
 
-        private var forecastHourlyViewModel: ForecastViewModel?
+    private var forecastViewModel: ForecastViewModel?
+    var forecastView = ForecastView()
+    var locationManager: CLLocationManager!
 
-        var forecastView = ForecastView()
-
-        var locationManager: CLLocationManager!
-
-        // MARK: viewDidLoad
-        override func viewDidLoad() {
-            super.viewDidLoad()
-
-            self.coreLocationSetup()
-            // Do any additional setup after loading the view.
-        }
-
-        // MARK: CoreLocation intitalization
-        private func coreLocationSetup() {
-            locationManager = CLLocationManager()
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
-            locationManager.startUpdatingLocation()
-
-            //Ask location permission for when in use
-            locationManager.requestWhenInUseAuthorization()
-        }
-
-        // MARK: Get Current Forecast WS
-        private func fetchCurrentForecastHourly(lat: CLLocationDegrees, lon: CLLocationDegrees) {
-            ForecastClient.shared.getCurrentLocationForecast(query1: String(lat), query2: String(lon), vc: self, completion: { (result) in
-                switch result {
-                case .success(let responseObj):
-                    //initialize ForecastViewModel
-                    self.forecastHourlyViewModel = ForecastViewModel(forecastWeatherModel: responseObj!)
-                    self.navigationItem.title = self.forecastHourlyViewModel?.prepareCity()
-                    self.addHourlyForecastView()
-                case .failure(let error):
-                    print(error)
-                }
-            })
-        }
-
-        // MARK: Add Current Weather View to parent view
-        private func addHourlyForecastView() {
-            //init homeView
-            forecastView = ForecastView.init(frame: self.view.bounds)
-
-            //Add the view
-            self.view.addSubview(forecastView)
-            self.addTableViewData()
-
-            //assign value to views label or other stuff
-            forecastHourlyViewModel?.configure(forecastView)
-        }
-
-        // MARK: - TableView Set DataSource and Delegate
-        //Tableview MVVM refere link
-        //https://github.com/takumi314/Sample-TableView-With-MultipleCell-MVVM
-
-        private func addTableViewData() {
-            self.forecastView.tableView.dataSource = forecastHourlyViewModel
-            self.forecastView.tableView.delegate = forecastHourlyViewModel
-            self.forecastView.tableView.estimatedRowHeight = 100
-            self.forecastView.tableView.rowHeight = UITableView.automaticDimension
-
-            self.forecastView.tableView.register(UINib(nibName: "ForecastTableViewCell", bundle: nil), forCellReuseIdentifier: "ForecastTableViewCell")
-        }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.coreLocationSetup()
     }
 
-    extension ForecastViewController: CLLocationManagerDelegate {
-        func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-            print("locations = \(locations)")
-            self.locationManager.stopUpdatingLocation()
+    private func coreLocationSetup() {
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.startUpdatingLocation()
+        locationManager.requestWhenInUseAuthorization()
+    }
 
-            if locations.count > 0 {
-                if Reachability.isConnectedToNetwork() {
-                    let geoCoder = CLGeocoder()
-                    let location = CLLocation(latitude: locations[0].coordinate.latitude, longitude: locations[0].coordinate.longitude)
-                    geoCoder.reverseGeocodeLocation(location, completionHandler: { placemarks, _ -> Void in
-                        // Place details
+    private func fetchCurrentForecastHourly(lat: CLLocationDegrees, lon: CLLocationDegrees) {
+        let loadIndicator = Utility.addLoaderIndicator(on: self)
+        ForecastClient.shared.getCurrentLocationForecast(query1: String(lat), query2: String(lon),
+                                                         vc: self, completion: { (result) in
+                                                            switch result {
+                                                            case .success(let responseObj):
+                                                                self.forecastViewModel = ForecastViewModel(forecastWeatherModel: responseObj!)
+                                                                self.navigationItem.title = self.forecastViewModel?.prepareCity()
+                                                                self.addHourlyForecastView()
+                                                                DispatchQueue.main.async {
+                                                                    loadIndicator.stopAnimating()
+                                                                }
+                                                            case .failure(let error):
+                                                                print(error)
+                                                                DispatchQueue.main.async {
+                                                                    loadIndicator.stopAnimating()
+                                                                }
+                                                            }
+        })
+    }
 
-                        guard let placeMark = placemarks?.first else { return }
+    private func addHourlyForecastView() {
+        forecastView = ForecastView.init(frame: self.view.bounds)
+        self.view.addSubview(forecastView)
+        self.addTableViewData()
+        forecastViewModel?.configure(forecastView)
+    }
 
-                        // City
-                        if let city = placeMark.subAdministrativeArea {
-                            print(city)
-                            self.fetchCurrentForecastHourly(lat: locations[0].coordinate.latitude, lon: locations[0].coordinate.longitude)
+    private func addTableViewData() {
+        self.forecastView.tableView.dataSource = forecastViewModel
+        self.forecastView.tableView.delegate = forecastViewModel
+        self.forecastView.tableView.estimatedRowHeight = 100
+        self.forecastView.tableView.rowHeight = UITableView.automaticDimension
 
-                        }
-                        // Country
-                        if let country = placeMark.country {
-                            print(country)
-                        }
+        self.forecastView.tableView.register(ForecastTableViewCell.self, forCellReuseIdentifier: ForecastTableViewCell.customCell)
+    }
+}
 
-                    })
-                } else {
-                    Alert.somethingWentWrong(on: self)
-                }
+extension ForecastViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        print("locations = \(locations)")
+        self.locationManager.stopUpdatingLocation()
+        if locations.count > 0 {
+            if Reachability.isConnectedToNetwork() {
+                let loadIndicator = Utility.addLoaderIndicator(on: self)
+                let geoCoder = CLGeocoder()
+                let location = CLLocation(latitude: locations[0].coordinate.latitude,
+                                          longitude: locations[0].coordinate.longitude)
+                geoCoder.reverseGeocodeLocation(location, completionHandler: { placemarks, _ -> Void in
+                    DispatchQueue.main.async {
+                        loadIndicator.stopAnimating()
+                    }
+                    guard let placeMark = placemarks?.first else { return }
+                    if placeMark.subAdministrativeArea != nil {
+                        self.fetchCurrentForecastHourly(lat: locations[0].coordinate.latitude,
+                                                        lon: locations[0].coordinate.longitude)
+                    }
+                    if placeMark.country != nil {
+                    }
+
+                })
+            } else {
+                Alert.somethingWentWrong(on: self)
             }
         }
     }
+}

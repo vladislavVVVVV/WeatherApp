@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// Protocol for easy construction of URls, ideally an enum will be the one conforming to this protocol.
+// Protocol for easy construction of URls, ideally an enum will be the one conforming to this protocol.
 protocol Endpoint {
 
     var base: String { get }
@@ -76,17 +76,8 @@ extension Endpoint {
         return request
     }
 
-    //for post multiform call
-    //https://newfivefour.com/swift-form-data-multipart-upload-URLRequest.html
-    /*
-     Sample data
-    //var r  = URLRequest(url: URL(string: "https://prospero.uatproxy.cdlis.co.uk/prospero/DocumentUpload.ajax")!)
-    //    r.httpMethod = "POST"
-    //    let boundary = "Boundary-\(UUID().uuidString)"
-    //    r.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-    */
-
-    func postMultiFormRequest(parameters: [String: String], headers: [HTTPHeader], boundary: String, dataArray: [[String: Any]] = [[:]], mimeType: String = "image/jpg") -> URLRequest? {
+    func postMultiFormRequest(parameters: [String: String], headers: [HTTPHeader], boundary: String,
+                              dataArray: [[String: Any]] = [[:]], mimeType: String = "image/jpg") -> URLRequest? {
 
         guard var request = self.request else { return nil }
         request.httpMethod = HTTPMethods.post.rawValue
@@ -115,14 +106,6 @@ extension Endpoint {
             }
         }
 
-        /*
-        body.appendString(boundaryPrefix)
-        body.appendString("Content-Disposition: form-data; name=\"file\"; filename=\"\(filename)\"\r\n")
-        body.appendString("Content-Type: \(mimeType)\r\n\r\n")
-        body.append(data)
-        body.appendString("\r\n")
-        body.appendString("--".appending(boundary.appending("--")))
-        */
         request.httpBody = body as Data
 
         headers.forEach { request.addValue($0.header.value, forHTTPHeaderField: $0.header.field) }

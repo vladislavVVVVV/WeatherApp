@@ -7,14 +7,17 @@
 //
 
 import UIKit
+import SnapKit
 
 class ForecastTableViewCell: UITableViewCell {
     
-    @IBOutlet var tempLabel: UILabel!
+    static var customCell = "ForecastTableViewCell"
     
-    @IBOutlet var titleLabel: UILabel!
+    lazy var tempLabel = UILabel()
+    lazy var dateLabel = UILabel()
+    lazy var imageState = UIImageView()
+    lazy var descLabel = UILabel()
     
-    @IBOutlet var imageState: UIImageView!
     lazy var dateFormatterForWSResponse: DateFormatter = {
         var formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -27,24 +30,65 @@ class ForecastTableViewCell: UITableViewCell {
         return formatter
     }()
     
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        imageState.contentMode = .scaleAspectFit
+        initializeUI()
+        createConstraints()
+    }
     
-     override func setSelected(_ selected: Bool, animated: Bool) {
-            super.setSelected(selected, animated: animated)
+    private func initializeUI() {
+        self.addSubviews(tempLabel, dateLabel, imageState, descLabel)
+        tempLabel.textColor = .systemBlue
+        tempLabel.font = tempLabel.font.withSize(35)
+        dateLabel.font = UIFont(name: "GillSans", size: 20)
+        descLabel.font = UIFont(name: "GillSans", size: 17)
+    }
 
-            if #available(iOS 13.0, *) {
-                titleLabel.textColor = .label
-            } else {
-                // Fallback on earlier versions
-                titleLabel.textColor = .black
-            } //UIColor.init(hexString: AppTextColor)
-            
-            // Configure the view for the selected state
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init?(coder aDecoder: NSCoder)")
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        
+        if #available(iOS 13.0, *) {
+            dateLabel.textColor = .label
+        } else {
+            dateLabel.textColor = .black
+        }
+    }
+    
+    private func createConstraints() {
+        
+        imageState.snp.makeConstraints { make in
+            make.height.equalTo(80)
+            make.width.equalTo(imageState.snp.height)
+            make.centerY.equalToSuperview()
+            make.left.equalToSuperview().offset(16)
+        }
+        dateLabel.snp.makeConstraints { (make) in
+            make.top.equalToSuperview().offset(28)
+            make.left.equalTo(imageState.snp.right).offset(20)
+        }
+        descLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(dateLabel.snp.bottom).offset(0)
+            make.left.equalTo(imageState.snp.right).offset(20)
+        }
+        tempLabel.snp.makeConstraints { (make) in
+            make.centerY.equalToSuperview()
+            make.right.equalToSuperview().offset(-20)
         }
         
-        func configure(weather: ForecastList?) {
-            titleLabel.text = Utility.getDateString(stringDate: (weather?.dtTxt)!, dateFormatInput: dateFormatterForWSResponse, dateFormatOutput: dateFormatter)
-            tempLabel.text = String(format: "%.1f\(celSymbol)", ((weather?.main?.temp ?? 273.15) - 273.15))
-            imageState.image = (weather?.weather![0].iconImage)!
-        }
         
     }
+        func configure(weather: ForecastList?) {
+            dateLabel.text = Utility.getDateString(stringDate: (weather?.dtTxt)!,
+                                                   dateFormatInput: dateFormatterForWSResponse,
+                                                   dateFormatOutput: dateFormatter)
+            tempLabel.text = String(format: "%.f\(celSymbol)", ((weather?.main?.temp ?? 273.15) - 273.15))
+            imageState.image = (weather?.weather![0].iconImage)!
+            descLabel.text = (weather?.weather![0].main ?? "Unknown")!
+        }
+        
+}

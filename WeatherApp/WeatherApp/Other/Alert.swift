@@ -20,7 +20,6 @@ enum Alert {
         }
     }
 
-    // MARK: - No Internet connection alert
     static func showNoInternetConnection(on vc: UIViewController) {
         Alert.showBasic(title: "No Internet Connection", message: "Please try again later", vc: vc)
     }
