@@ -14,10 +14,8 @@ class CurrentWeatherViewController: UIViewController {
     private var viewModel: CurrentWeatherViewModel?
 
     var currentWeatherView = CurrentWeatherView()
-
     var locationManager: CLLocationManager!
 
-    // MARK: viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = "Today"
@@ -25,7 +23,6 @@ class CurrentWeatherViewController: UIViewController {
 
     }
 
-    // MARK: CoreLocation intitalization
     private func coreLocationSetup() {
         locationManager = CLLocationManager()
         locationManager.delegate = self
@@ -34,7 +31,6 @@ class CurrentWeatherViewController: UIViewController {
         locationManager.requestWhenInUseAuthorization()
     }
 
-    // MARK: Get Current Weather WS
     private func fetchCurrentWeather(lat: CLLocationDegrees, lon: CLLocationDegrees) {
 
         let loadIndicator = Utility.addLoaderIndicator(on: self)
@@ -57,7 +53,6 @@ class CurrentWeatherViewController: UIViewController {
         })
     }
 
-    // MARK: Add Current Weather View to parent view
     private func addCurrentWeatherViews() {
         currentWeatherView = CurrentWeatherView.init(frame: self.view.bounds)
         self.view.addSubview(currentWeatherView)
